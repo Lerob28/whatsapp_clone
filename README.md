@@ -14,3 +14,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Outils utilises
+1 - https://iconscout.com : pour telecharger les icones
+2 - https://www.appicon.co : pour generer les icones de L'application
+
+## Packages
+1 - 
