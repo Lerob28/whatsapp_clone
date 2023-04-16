@@ -12,4 +12,6 @@ class Coloors {
   static const Color blueLight = Color(0xFF027EB5);
   static const Color greyLight = Color(0xFF667781);
   static const Color backgroundLight = Color(0xFFFFFFFF);
+
+  static const Color greyBackground = Color(0xFF202C33);
 }

@@ -4,9 +4,9 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:whatsapp_clone/common/utils/colors.dart';
 
 import '../../../common/widgets/custom_elevate_button.dart';
-import 'widgets/image_bloc.dart';
-import 'widgets/language_selection.dart';
-import 'widgets/privacy_and_terme.dart';
+import '../widgets/image_bloc.dart';
+import '../widgets/language_selection.dart';
+import '../widgets/privacy_and_terme.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Welcome To Yves Whatsapp',
+                  'Welcome To Lerob Whatsapp',
                   style: TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.bold,
