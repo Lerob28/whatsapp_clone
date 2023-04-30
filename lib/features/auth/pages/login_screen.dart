@@ -1,7 +1,10 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
+import 'package:whatsapp_clone/common/helper/show_alert_dialog.dart';
 import 'package:whatsapp_clone/common/utils/colors.dart';
 import 'package:whatsapp_clone/common/widgets/custom_elevate_button.dart';
+import 'package:whatsapp_clone/common/widgets/custom_icon_buttom.dart';
 import 'package:whatsapp_clone/features/auth/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +18,61 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController countryNameController;
   late TextEditingController countryCodeController;
   late TextEditingController phoneNumberController;
+
+  sendCodeToPhone() {
+    final phone = phoneNumberController.text;
+    final name = countryNameController.text;
+    bool isTooShort = phone.length < 9 ;
+    bool isTooLong = phone.length >= 10 ;
+
+    if(phone.isEmpty) {
+      return showAlertDialog(
+        context: context,
+        message: "The phone number is required !",
+      );
+    }else if(isTooShort) {
+      return showAlertDialog(
+        context: context,
+        message: "The phone number you entered is too short for the country: $name.\n\n Include your area if yoe haven't",
+      );
+    }else if(isTooLong) {
+      return showAlertDialog(
+        context: context,
+        message: "The phone number you entered is too long for the country: $name.",
+      );
+    }
+  }
+
+  void showCountryCodePicker() {
+    showCountryPicker(
+      context: context,
+      showPhoneCode: true,
+      favorite: ['CM', 'US', 'FR'],
+      countryListTheme: CountryListThemeData(
+          bottomSheetHeight: 600,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          flagSize: 25,
+          borderRadius: BorderRadius.circular(25),
+          textStyle: TextStyle(color: context.theme.greyColor),
+          inputDecoration: InputDecoration(
+            labelStyle: TextStyle(color: context.theme.greyColor),
+            prefixIcon: const Icon(
+              Icons.language,
+              color: Coloors.greenDark,
+            ),
+            hintText: 'Search country code or name',
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Coloors.greenDark,
+              ),
+            ),
+          )),
+      onSelect: (country) {
+        countryNameController.text = country.name;
+        countryCodeController.text = country.countryCode;
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -46,19 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () => {},
-            splashColor: Colors.tealAccent,
-            splashRadius: 22,
-            iconSize: 22,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(
-              minWidth: 40,
-            ),
-            icon: Icon(
-              Icons.more_vert_rounded,
-              color: context.theme.greyColor,
-            ),
+          CustomIconButton(
+            onTap: () => {},
+            icon: Icons.more_vert_rounded,
           ),
         ],
       ),
@@ -95,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             child: CustomTextField(
               controller: countryNameController,
-              onTap: () => {},
+              onTap: showCountryCodePicker,
               readOnly: true,
               suffixIcon: const Icon(
                 Icons.arrow_drop_down,
@@ -112,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: 70,
                   child: CustomTextField(
-                    onTap: () => {},
+                    onTap: showCountryCodePicker,
                     controller: countryCodeController,
                     prefixText: ' + ',
                     readOnly: true,
@@ -142,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomElevateButton(
-        onPressed: () => {},
+        onPressed: sendCodeToPhone,
         text: 'NEXT',
         buttonWidth: 80,
       ),
