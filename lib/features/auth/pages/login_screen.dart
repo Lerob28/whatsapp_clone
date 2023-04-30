@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/helper/show_alert_dialog.dart';
+import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/utils/colors.dart';
 import 'package:whatsapp_clone/common/widgets/custom_elevate_button.dart';
 import 'package:whatsapp_clone/common/widgets/custom_icon_buttom.dart';
@@ -18,6 +19,13 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController countryNameController;
   late TextEditingController countryCodeController;
   late TextEditingController phoneNumberController;
+
+   navigateToVerificationScreen(context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      Routes.VERIFICATION,
+      (route) => false,
+    );
+  }
 
   sendCodeToPhone() {
     final phone = phoneNumberController.text;
@@ -190,7 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomElevateButton(
-        onPressed: sendCodeToPhone,
+        onPressed: phoneNumberController.text.length == 9 
+        ? navigateToVerificationScreen(context) 
+        : sendCodeToPhone,
         text: 'NEXT',
         buttonWidth: 80,
       ),

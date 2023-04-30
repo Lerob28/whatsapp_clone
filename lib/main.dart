@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/themes/dark_theme.dart';
 import 'package:whatsapp_clone/common/themes/light_theme.dart';
-import 'package:whatsapp_clone/features/auth/pages/login_screen.dart';
-import 'package:whatsapp_clone/features/auth/pages/user_info_screen.dart';
-import 'package:whatsapp_clone/features/auth/pages/verification_screen.dart';
 import 'package:whatsapp_clone/features/welcome/page/welcome_screen.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -22,10 +30,8 @@ class MyApp extends StatelessWidget {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       themeMode: ThemeMode.system,
-      home: const UserInfoScreen(), 
-      //home: const VerificationScreen(), 
-      //home: const WelcomeScreen(), 
-      //home: const LoginScreen(), 
+      onGenerateRoute: Routes.onGenerateRoute,
+      home: const WelcomeScreen(), 
     );
   }
 }

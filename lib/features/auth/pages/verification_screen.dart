@@ -4,8 +4,14 @@ import 'package:whatsapp_clone/common/widgets/custom_icon_buttom.dart';
 import 'package:whatsapp_clone/features/auth/widgets/custom_text_field.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({super.key});
+  const VerificationScreen({
+    super.key,
+    required this.verificationId,
+    required this.phoneNumber,
+  });
 
+  final String verificationId;
+  final String phoneNumber;
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
 }
@@ -46,7 +52,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20,),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
         child: Column(
           children: [
             Padding(
