@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/themes/dark_theme.dart';
 import 'package:whatsapp_clone/common/themes/light_theme.dart';
@@ -7,15 +8,14 @@ import 'package:whatsapp_clone/features/welcome/page/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,14 +24,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Whatsapp Me',
       theme: lightTheme(),
       darkTheme: darkTheme(),
       themeMode: ThemeMode.system,
       onGenerateRoute: Routes.onGenerateRoute,
-      home: const WelcomeScreen(), 
+      home: const WelcomeScreen(),
     );
   }
 }

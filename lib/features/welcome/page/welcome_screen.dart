@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/common/routes/routes.dart';
+import 'package:whatsapp_clone/features/auth/pages/login_screen.dart';
 import '../../../common/widgets/custom_elevate_button.dart';
 import '../widgets/image_bloc.dart';
 import '../widgets/language_selection.dart';
@@ -8,9 +9,9 @@ import '../widgets/privacy_and_terme.dart';
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
-  navigateToLoginScreen(context) {
+  void navigateToLoginScreen(context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
-      Routes.LOGIN,
+      Routes.login,
       (route) => false,
     );
   }
@@ -36,7 +37,10 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 const PrivacyAndTerms(),
                 CustomElevateButton(
-                  onPressed: navigateToLoginScreen(context),
+                  onPressed: () {
+                    //navigateToLoginScreen(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen() ));
+                  },
                   text: "AGREE AND CONTINUE",
                 ),
                 const SizedBox(

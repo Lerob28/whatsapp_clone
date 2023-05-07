@@ -6,48 +6,64 @@ import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/utils/colors.dart';
 import 'package:whatsapp_clone/common/widgets/custom_elevate_button.dart';
 import 'package:whatsapp_clone/common/widgets/custom_icon_buttom.dart';
+import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/auth/widgets/custom_text_field.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   late TextEditingController countryNameController;
   late TextEditingController countryCodeController;
   late TextEditingController phoneNumberController;
 
-   navigateToVerificationScreen(context) {
+  void navigateToVerificationScreen(context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
-      Routes.VERIFICATION,
+      Routes.verification,
       (route) => false,
+      arguments: {
+        'phoneNumber': phoneNumberController.text,
+        'smsCodeId': '01',
+      },
     );
   }
 
-  sendCodeToPhone() {
-    final phone = phoneNumberController.text;
-    final name = countryNameController.text;
-    bool isTooShort = phone.length < 9 ;
-    bool isTooLong = phone.length >= 10 ;
+  void sendCodeToPhone() {
+    final phoneNumber = phoneNumberController.text;
+    final countryName = countryNameController.text;
+    final CountryCode = countryCodeController.text;
 
-    if(phone.isEmpty) {
-      return showAlertDialog(
+    if (phoneNumber.isEmpty) {
+      print('sendCodeToPhone isEmpty : ${phoneNumber.isEmpty}');
+      showAlertDialog(
         context: context,
         message: "The phone number is required !",
       );
-    }else if(isTooShort) {
-      return showAlertDialog(
+    } else if (phoneNumber.length < 9) {
+      print('sendCodeToPhone isTooShort : ${phoneNumber.length < 9}');
+      showAlertDialog(
         context: context,
-        message: "The phone number you entered is too short for the country: $name.\n\n Include your area if yoe haven't",
+        message:
+            "The phone number you entered is too short for the country: $countryName.\n\n Include your area if yoe haven't",
       );
-    }else if(isTooLong) {
-      return showAlertDialog(
+    } else if (phoneNumber.length >= 10) {
+      print('sendCodeToPhone isTooLong : ${phoneNumber.length >= 10}');
+      showAlertDialog(
         context: context,
-        message: "The phone number you entered is too long for the country: $name.",
+        message:
+            "The phone number you entered is too long for the country: $countryName.",
       );
+    } else {
+      // request a verification code
+      ref.read(authControllerProvider).sendVerificationCode(
+            context: context,
+            phoneNumber: '+$CountryCode$phoneNumber',
+          );
     }
   }
 
@@ -69,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Coloors.greenDark,
             ),
             hintText: 'Search country code or name',
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Coloors.greenDark,
               ),
@@ -77,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )),
       onSelect: (country) {
         countryNameController.text = country.name;
-        countryCodeController.text = country.countryCode;
+        countryCodeController.text = country.phoneCode;
       },
     );
   }
@@ -198,9 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomElevateButton(
-        onPressed: phoneNumberController.text.length == 9 
-        ? navigateToVerificationScreen(context) 
-        : sendCodeToPhone,
+        onPressed: sendCodeToPhone,
         text: 'NEXT',
         buttonWidth: 80,
       ),

@@ -5,30 +5,31 @@ import 'package:whatsapp_clone/features/auth/pages/verification_screen.dart';
 import 'package:whatsapp_clone/features/welcome/page/welcome_screen.dart';
 
 abstract class Routes {
-  static const String WELCOME = 'welcome';
-  static const String LOGIN = 'login';
-  static const String VERIFICATION = 'verification';
-  static const String USER_INFO = 'user_info';
+  
+  static const String welcome = 'welcome';
+  static const String login = 'login';
+  static const String verification = 'verification';
+  static const String user_info = 'user_info';
 
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case WELCOME:
+      case welcome:
         return MaterialPageRoute(
           builder: (context) => const WelcomeScreen(),
         );
-      case LOGIN:
+      case login:
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
         );
-      case VERIFICATION:
+      case verification:
         final Map pageArguments = routeSettings.arguments as Map;
         return MaterialPageRoute(
           builder: (context) => VerificationScreen(
             phoneNumber: pageArguments['phoneNumber'],
-            verificationId: pageArguments['verificationId'],
+            smsCodeId: pageArguments['smsCodeId'],
           ),
         );
-      case USER_INFO:
+      case user_info:
         return MaterialPageRoute(
           builder: (context) => const UserInfoScreen(),
         );
